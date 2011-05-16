@@ -1,15 +1,14 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 package de.madsolutions.gitstatviewer
 
-/**
- * @author ${user.name}
- */
 object App {
-  
-  def foo(x : Array[String]) = x.foldLeft("")((a,b) => a + b)
-  
-  def main(args : Array[String]) {
-    println( "Hello World!" )
-    println("concat arguments = " + foo(args))
-  }
 
+  def main(args: Array[String]) {
+    println("Hello from Scala")
+  }
+  
 }
