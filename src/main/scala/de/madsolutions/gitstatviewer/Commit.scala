@@ -5,6 +5,10 @@
 
 package de.madsolutions.gitstatviewer
 
-class Commit(val id: String) {
+import java.util.Date
 
+class Commit(val id: String) {
+  var author: String = ""
+  var date: Date = null
+  var message: String = ""
 }

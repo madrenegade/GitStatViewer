@@ -5,27 +5,50 @@
 
 package de.madsolutions.gitstatviewer
 
-import scala.io.Source
+
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.GregorianCalendar
+import javax.xml.datatype.DatatypeFactory
 
 class LogExtractor {
+  
+  private val CommitLineRE = """commit ([a-z0-9]{40})""".r
+  private val AuthorLineRE = """Author: ([\w\s<>@\\.]+)""".r
+  private val DateLineRE = """Date:[\s]*([\w\d\s:+]+)""".r
+  
+  private val log = new Log
+  private var currentCommit: Commit = null
+  
+  private var parsingDiff = false
 
   def extractFrom(logData: String): Option[Log] = {
-    val log = new Log
     
-    logData.split("commit") filter(!_.trim.isEmpty) foreach {
-      s: String => {
-        log.addCommit(extractCommit(s))
-      }
-    }
+    logData.lines foreach processLine
+    
     
     Some(log)
   }
   
-  private def extractCommit(commitData: String): Commit = {
-    
-    val lines = commitData.lines
-    val commit = new Commit(lines.next)
-    
-    commit
+  private def processLine(line: String) = line.trim match {
+    case CommitLineRE(id) => {
+        parsingDiff = false
+        currentCommit = new Commit(id)
+        log.addCommit(currentCommit)
+    }
+    case AuthorLineRE(author) => {
+        currentCommit.author = author
+    }
+    case DateLineRE(date) => {
+        val formatter = new SimpleDateFormat("EEE MMM dd hh:mm:ss yyyy Z")
+        println(formatter.parse(date))
+    }
+    case s: String => {
+        if(parsingDiff) {
+          
+        } else {
+          currentCommit.message += s
+        }
+    }
   }
 }
