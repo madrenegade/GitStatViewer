@@ -19,6 +19,7 @@
             </goals>
             <properties>
                 <exec.classpathScope>runtime</exec.classpathScope>
+                <exec.workingdir>/home/madrenegade/Documents/Studies/Term 8/XML/FA</exec.workingdir>
                 <exec.args>-classpath %classpath de.madsolutions.gitstatviewer.App</exec.args>
                 <exec.executable>java</exec.executable>
             </properties>
@@ -31,6 +32,7 @@
             </goals>
             <properties>
                 <exec.classpathScope>runtime</exec.classpathScope>
+                <exec.workingdir>/home/madrenegade/Documents/Studies/Term 8/XML/FA</exec.workingdir>
                 <exec.args>-Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address} -classpath %classpath de.madsolutions.gitstatviewer.App</exec.args>
                 <jpda.listen>true</jpda.listen>
                 <exec.executable>java</exec.executable>
@@ -44,6 +46,7 @@
             </goals>
             <properties>
                 <exec.args>${profiler.args} -classpath %classpath de.madsolutions.gitstatviewer.App</exec.args>
+                <exec.workingdir>/home/madrenegade/Documents/Studies/Term 8/XML/FA</exec.workingdir>
                 <profiler.action>profile</profiler.action>
                 <exec.executable>${profiler.java}</exec.executable>
             </properties>

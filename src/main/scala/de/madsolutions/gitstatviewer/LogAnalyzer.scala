@@ -5,13 +5,33 @@
 
 package de.madsolutions.gitstatviewer
 
-class LogAnalyzer {
+import de.madsolutions.stats.generator.GeneralStatisticsGenerator
+import de.madsolutions.stats.generator.StatGenerator
+import scala.collection.SortedSet
+import scala.xml.Elem
+import scala.xml.XML
 
-  def analyze(log: Log): Option[Statistics] = {
-    val totalCommits = log.getCommits.length
-    val generalStatistics = new GeneralStatistics(totalCommits)
-    
-    Some(new Statistics(generalStatistics))
-  }
+class LogAnalyzer {
   
+  private var log: Log = null
+  private val generators = List[StatGenerator](
+    new GeneralStatisticsGenerator
+  )
+  
+  def analyze(log: Log): Elem = {
+    this.log = log
+    
+    val totalCommits = this.log.getCommits.length
+    
+    var statistics = <statistics>
+                      {generators map {
+                          g: StatGenerator => {
+                            g.analyze(log)
+                          }
+                        }
+                      }
+                     </statistics>
+    
+    statistics
+  }
 }

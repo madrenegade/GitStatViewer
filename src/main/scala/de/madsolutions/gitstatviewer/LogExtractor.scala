@@ -5,49 +5,57 @@
 
 package de.madsolutions.gitstatviewer
 
-
 import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.GregorianCalendar
-import javax.xml.datatype.DatatypeFactory
 
 class LogExtractor {
   
   private val CommitLineRE = """commit ([a-z0-9]{40})""".r
-  private val AuthorLineRE = """Author: ([\w\s<>@\\.]+)""".r
+  private val AuthorLineRE = """Author: ([\w\s-]+)(<[\w\s\\(\\)\\.@-]+>)?""".r
   private val DateLineRE = """Date:[\s]*([\w\d\s:+]+)""".r
+  private val CommitMessageLineRE = """[\s]{0,4}(.*)""".r
+  private val DiffLineRE = """(diff --git (.+) (.+))""".r
   
   private val log = new Log
   private var currentCommit: Commit = null
-  
   private var parsingDiff = false
 
-  def extractFrom(logData: String): Option[Log] = {
-    
+  def extractFrom(logData: String): Log = {
     logData.lines foreach processLine
-    
-    
-    Some(log)
+    log
   }
   
   private def processLine(line: String) = line.trim match {
     case CommitLineRE(id) => {
+        //println("<COMMIT> " + id)
         parsingDiff = false
         currentCommit = new Commit(id)
         log.addCommit(currentCommit)
     }
-    case AuthorLineRE(author) => {
-        currentCommit.author = author
+    case AuthorLineRE(author, email) => {
+        //println("<AUTHOR> " + author)
+        //println("<EMAIL> " + email)
+        currentCommit.author = author.trim
     }
     case DateLineRE(date) => {
+        //println("<DATE> " + date)
         val formatter = new SimpleDateFormat("EEE MMM dd hh:mm:ss yyyy Z")
-        println(formatter.parse(date))
+        currentCommit.date = formatter.parse(date)
     }
-    case s: String => {
-        if(parsingDiff) {
-          
-        } else {
-          currentCommit.message += s
+    case DiffLineRE(message, fileA, fileB) => {
+        //println("<DIFFLINE> " + message)
+        //println("<DIFF> " + fileA + " <-> " + fileB)
+        parsingDiff = true
+        currentCommit.diff += message
+    }
+    case CommitMessageLineRE(message) => {
+        if(!message.trim.isEmpty) {
+          if(parsingDiff) {
+            //println("<DIFFMESSAGE> " + message)
+            currentCommit.diff += message
+          } else {
+            //println("<MESSAGE> " + message)
+            currentCommit.message += message
+          }
         }
     }
   }

@@ -23,27 +23,25 @@ object App {
       }
     }
     
-    val logData = LogFetcher.fetch(directory) match {
-      case Some(x) => x
-      case None => sys.exit(2)
-    }
+    val start = System.currentTimeMillis
     
+    println("Fetching logs")
+    val logData = LogFetcher.fetch(directory)
+    
+    println("Extracting logs")
     val logExtractor = new LogExtractor
+    val log = logExtractor.extractFrom(logData)
     
-    val log = logExtractor.extractFrom(logData) match {
-      case Some(x) => x
-      case None => sys.exit(3)
-    }
-    
+    println("Analyzing logs")
     val analyzer = new LogAnalyzer
+    val statistics = analyzer.analyze(log)
     
-    val statistics = analyzer.analyze(log) match {
-      case Some(x) => x
-      case None => sys.exit(4)
-    }
+    val end = System.currentTimeMillis
     
-    println("Commits: " + statistics.general.numCommits)
+    println("Logmining took " + (end-start) + "ms")
     
+    val printer = new scala.xml.PrettyPrinter(80, 4)
+    println(printer.format(statistics))
   }
   
 }

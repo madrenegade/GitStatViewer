@@ -11,4 +11,5 @@ class Commit(val id: String) {
   var author: String = ""
   var date: Date = null
   var message: String = ""
+  var diff: String = ""
 }
