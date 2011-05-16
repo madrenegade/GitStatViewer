@@ -5,6 +5,6 @@
 
 package de.madsolutions.gitstatviewer
 
-class Statistics(val general: GeneralStatistics) {
+class Commit(val id: String) {
 
 }

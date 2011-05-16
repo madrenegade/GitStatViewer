@@ -42,6 +42,8 @@ object App {
       case None => sys.exit(4)
     }
     
+    println("Commits: " + statistics.general.numCommits)
+    
   }
   
 }

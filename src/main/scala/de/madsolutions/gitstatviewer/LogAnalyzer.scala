@@ -8,7 +8,10 @@ package de.madsolutions.gitstatviewer
 class LogAnalyzer {
 
   def analyze(log: Log): Option[Statistics] = {
-    None
+    val totalCommits = log.getCommits.length
+    val generalStatistics = new GeneralStatistics(totalCommits)
+    
+    Some(new Statistics(generalStatistics))
   }
   
 }

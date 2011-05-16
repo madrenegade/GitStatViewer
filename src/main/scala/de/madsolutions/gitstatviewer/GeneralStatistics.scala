@@ -5,6 +5,5 @@
 
 package de.madsolutions.gitstatviewer
 
-class Statistics(val general: GeneralStatistics) {
-
+class GeneralStatistics(val numCommits: Int) {
 }
