@@ -42,6 +42,7 @@
       <artifactId>scala-library</artifactId>
       <version>${scala.version}</version>
     </dependency>
+    
 
     <!-- Test -->
     <dependency>
