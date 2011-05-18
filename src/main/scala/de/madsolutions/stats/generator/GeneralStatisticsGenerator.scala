@@ -19,7 +19,7 @@ class GeneralStatisticsGenerator extends StatGenerator {
     this.log = log
     
     <general>
-      <numCommits>{log.getCommits.size}</numCommits>
+      <numCommits>{log.commits.size}</numCommits>
       <authors>
         {
           authors.sorted map {
@@ -35,14 +35,14 @@ class GeneralStatisticsGenerator extends StatGenerator {
   }
   
   private def authors: List[String] = {
-    log.getCommits map (_.author) distinct
+    log.commits map (_.author) distinct
   }
   
   private def firstCommit: Date = {
-    log.getCommits.map (_.date).sorted.head
+    log.commits.map (_.date).sorted.head
   }
   
   private def lastCommit: Date = {
-    log.getCommits.map (_.date).sorted.last
+    log.commits.map (_.date).sorted.last
   }
 }

@@ -17,6 +17,7 @@ class LogExtractor {
   
   private val log = new Log
   private var currentCommit: Commit = null
+  
   private var parsingDiff = false
 
   def extractFrom(logData: String): Log = {
@@ -26,34 +27,26 @@ class LogExtractor {
   
   private def processLine(line: String) = line.trim match {
     case CommitLineRE(id) => {
-        //println("<COMMIT> " + id)
         parsingDiff = false
         currentCommit = new Commit(id)
         log.addCommit(currentCommit)
     }
     case AuthorLineRE(author, email) => {
-        //println("<AUTHOR> " + author)
-        //println("<EMAIL> " + email)
         currentCommit.author = author.trim
     }
     case DateLineRE(date) => {
-        //println("<DATE> " + date)
         val formatter = new SimpleDateFormat("EEE MMM dd hh:mm:ss yyyy Z")
         currentCommit.date = formatter.parse(date)
     }
     case DiffLineRE(message, fileA, fileB) => {
-        //println("<DIFFLINE> " + message)
-        //println("<DIFF> " + fileA + " <-> " + fileB)
         parsingDiff = true
-        currentCommit.diff += message
+        currentCommit.addDiffLine(message)
     }
     case CommitMessageLineRE(message) => {
         if(!message.trim.isEmpty) {
           if(parsingDiff) {
-            //println("<DIFFMESSAGE> " + message)
-            currentCommit.diff += message
+            currentCommit.addDiffLine(message)
           } else {
-            //println("<MESSAGE> " + message)
             currentCommit.message += message
           }
         }

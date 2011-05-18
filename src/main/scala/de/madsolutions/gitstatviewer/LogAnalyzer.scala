@@ -23,7 +23,7 @@ class LogAnalyzer {
   def analyze(log: Log): Elem = {
     this.log = log
     
-    val totalCommits = this.log.getCommits.length
+    val totalCommits = this.log.commits.length
     
     <statistics>
       {generators map {

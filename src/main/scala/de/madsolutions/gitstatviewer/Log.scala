@@ -9,9 +9,9 @@ import scala.collection.mutable.ListBuffer
 
 class Log {
 
-  private val commits: ListBuffer[Commit] = ListBuffer()
+  private val commitBuffer: ListBuffer[Commit] = ListBuffer()
   
-  def addCommit(commit: Commit) = commits += (commit)
-  def getCommits: List[Commit] = commits.toList
+  def addCommit(commit: Commit) = commitBuffer += (commit)
+  def commits: List[Commit] = commitBuffer.toList
   
 }
