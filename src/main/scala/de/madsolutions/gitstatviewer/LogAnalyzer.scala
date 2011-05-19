@@ -5,6 +5,7 @@
 
 package de.madsolutions.gitstatviewer
 
+import de.madsolutions.stats.generator.ActivityStatisticsGenerator
 import de.madsolutions.stats.generator.AuthorStatisticsGenerator
 import de.madsolutions.stats.generator.GeneralStatisticsGenerator
 import de.madsolutions.stats.generator.StatGenerator
@@ -17,7 +18,8 @@ class LogAnalyzer {
   private var log: Log = null
   private val generators = List[StatGenerator](
     new GeneralStatisticsGenerator,
-    new AuthorStatisticsGenerator
+    new AuthorStatisticsGenerator,
+    new ActivityStatisticsGenerator
   )
   
   def analyze(log: Log): Elem = {

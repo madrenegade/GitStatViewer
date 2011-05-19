@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<statistics>
+    <general>
+        <numCommits>8</numCommits>
+        <authors>
+            <author>Stefan Bradl</author>
+        </authors>
+        <firstCommit>Mon May 16 07:49:26 CEST 2011</firstCommit>
+        <lastCommit>Wed May 18 21:25:00 CEST 2011</lastCommit>
+    </general>
+    <author-stats>
+        <authors>
+            <author commits="8" name="Stefan Bradl">
+                <percentageOfAllCommits>1.0</percentageOfAllCommits>
+                <firstCommit>Mon May 16 07:49:26 CEST 2011</firstCommit>
+                <lastCommit>Wed May 18 21:25:00 CEST 2011</lastCommit>
+                <addedLines>906</addedLines>
+                <deletedLines>337</deletedLines>
+                <avgCommitsPerDay>3.1172485951635744</avgCommitsPerDay>
+                <activeDays>3</activeDays>
+            </author>
+        </authors>
+    </author-stats>
+</statistics>

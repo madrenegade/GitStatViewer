@@ -7,12 +7,18 @@ package de.madsolutions.stats.generator
 
 import de.madsolutions.gitstatviewer.Commit
 import de.madsolutions.gitstatviewer.Log
+import de.madsolutions.util.DateHelper
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.GregorianCalendar
 import scala.collection.mutable.HashMap
 import scala.xml.Elem
+
+// TODO: cumulated added lines per author
+// TODO: cumulated deleted lines per author
+// TODO: cumulated effective lines per author
+// TODO: commits per author over time
 
 class AuthorStatisticsGenerator extends StatGenerator {
 
@@ -56,24 +62,13 @@ class AuthorStatisticsGenerator extends StatGenerator {
     val last = log.commits.map (_.date).sorted.last
     val first = log.commits.map (_.date).sorted.head
     
-    val calendar1 = new GregorianCalendar
-    calendar1.setTime(first)
-    
-    val calendar2 = new GregorianCalendar
-    calendar2.setTime(last)
-    
-    val t1 = calendar1.getTimeInMillis
-    val t2 = calendar2.getTimeInMillis
-    
-    (t2-t1).toDouble / 1000.0 / 60.0 / 60.0 / 24.0
+    DateHelper.timeSpanBetween(first, last).inDays
   }
   
   private def avgCommitsPerDay(commits: List[Commit], age: Double) = {
     commits.size.toDouble / age
   }
   
-  // TODO: map Day -> CountOfCommits
-  // TODO: reduce sum count of commits
   private def commitsByDay(commits: List[Commit]) = {
     val fmt = new SimpleDateFormat("yyyy-MM-dd")
     

@@ -6,6 +6,7 @@
 package de.madsolutions.gitstatviewer
 
 import scala.xml.XML
+import scala.util.logging.ConsoleLogger
 
 object GitStatViewer extends App {
   
@@ -30,7 +31,7 @@ object GitStatViewer extends App {
   val logData = LogFetcher.fetch(directory)
     
   println("Extracting logs")
-  val logExtractor = new LogExtractor
+  val logExtractor = new LogExtractor //with ConsoleLogger
   val log = logExtractor.extractFrom(logData)
     
   println("Analyzing logs")
