@@ -48,4 +48,6 @@ object GitStatViewer extends App {
   println(pretty)  
   
   XML.save("git-statistics.xml", XML.loadString(pretty), "UTF-8", xmlDecl = true)
+  
+  // TODO: transform to xhtml using xslt
 }
