@@ -77,14 +77,7 @@ class AuthorStatisticsGenerator extends StatGenerator {
     }
   }
             
-  private def addedLines(commits: List[Commit]) = {
-    commits.map (_.addedLines).reduceLeft(_+_)
-  }
+  private def addedLines(commits: List[Commit]) = commits map (_.addedLines) reduceLeft(_+_)
   
-  private def deletedLines(commits: List[Commit]) = {
-    commits.map (_.diff.count {
-       line => {line.startsWith("-") && !line.startsWith("---")}
-      }
-    ).reduceLeft(_+_)
-  }
+  private def deletedLines(commits: List[Commit]) = commits map (_.deletedLines) reduceLeft(_+_)
 }

@@ -18,7 +18,13 @@ class Commit(val id: String) {
   
   def addedLines = {
     diff.count {
-     line => {line.startsWith("+") && !line.startsWith("+++")}
+      line => {line.startsWith("+") && !line.startsWith("+++")}
+    }
+  }
+  
+  def deletedLines = {
+    diff.count {
+      line => {line.startsWith("-") && !line.startsWith("---")}
     }
   }
   

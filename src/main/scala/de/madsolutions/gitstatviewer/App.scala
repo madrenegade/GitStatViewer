@@ -50,9 +50,6 @@ object GitStatViewer extends App {
   
   XML.save("git-statistics.xml", XML.loadString(pretty), "UTF-8", xmlDecl = true)
   
-  // TODO: transform to xhtml using xslt
-  analyzer.generators foreach {
-    (generator: StatGenerator) => {
-    }
-  }
+  val visualizer = new LogVisualizer(statistics)
+  visualizer.generateReport("/home/madrenegade/out")
 }
