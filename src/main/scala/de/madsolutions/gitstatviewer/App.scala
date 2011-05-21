@@ -51,5 +51,5 @@ object GitStatViewer extends App {
   XML.save("git-statistics.xml", XML.loadString(pretty), "UTF-8", xmlDecl = true)
   
   val visualizer = new LogVisualizer(statistics)
-  visualizer.generateReport("/home/madrenegade/out")
+  visualizer.generateReport("/home/madrenegade/Desktop/out")
 }

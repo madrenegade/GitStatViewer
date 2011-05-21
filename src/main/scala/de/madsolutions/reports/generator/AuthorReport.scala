@@ -7,10 +7,12 @@ package de.madsolutions.reports.generator
 
 import scala.xml.Elem
 
-trait ReportGenerator {
-  
-  def name: String
+class AuthorReport extends ReportGenerator {
 
-  def generateReport(outputPath: String, stats: Elem): Elem
+  def name: String = "Authors"
+
+  def generateReport(outputPath: String, stats: Elem): Elem = {
+    <p></p>
+  }
   
 }
