@@ -10,7 +10,7 @@ import scala.xml.Node
 
 class GeneralReport extends ReportGenerator {
 
-  def name: String = "General"
+  def name = "General"
 
   def generateReport(outputPath: String, stats: Elem): Elem = {
     <table>

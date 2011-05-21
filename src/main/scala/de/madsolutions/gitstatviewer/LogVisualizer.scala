@@ -5,6 +5,7 @@
 
 package de.madsolutions.gitstatviewer
 
+import de.madsolutions.reports.generator.AuthorReport
 import de.madsolutions.reports.generator.GeneralReport
 import de.madsolutions.reports.generator.ReportGenerator
 import java.io.File
@@ -14,7 +15,8 @@ import scala.xml.XML
 class LogVisualizer(stats: Elem) {
   
   private def reporters = List[ReportGenerator](
-    new GeneralReport
+    new GeneralReport,
+    new AuthorReport
   )
 
   def generateReport(outputPath: String) = {
@@ -37,7 +39,7 @@ class LogVisualizer(stats: Elem) {
 
               XML.save(outputPath + "/" + generator.name + "/report.xhtml", generatePage(generator.name, partialReport), "UTF-8", xmlDecl = true)
 
-              <a href={reportUrl(generator.name)}>{generator.name}</a>
+              <a href={reportUrl(generator.name)}>{generator.name}</a><br />
             }
           }
         }</div>)

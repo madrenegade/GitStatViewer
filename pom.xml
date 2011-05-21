@@ -27,6 +27,11 @@
             <name>Scala-Tools Maven2 Repository</name>
             <url>http://scala-tools.org/repo-releases</url>
         </repository>
+        <repository>
+            <id>jboss.org</id>
+            <name>JBoss Repos</name>
+            <url>http://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+        </repository>
     </repositories>
 
     <pluginRepositories>
@@ -34,6 +39,11 @@
             <id>scala-tools.org</id>
             <name>Scala-Tools Maven2 Repository</name>
             <url>http://scala-tools.org/repo-releases</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>jboss.org</id>
+            <name>JBoss Repos</name>
+            <url>http://repository.jboss.org/nexus/content/groups/public-jboss/</url>
         </pluginRepository>
     </pluginRepositories>
 
@@ -62,6 +72,11 @@
             <artifactId>scalatest</artifactId>
             <version>1.2</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>jfree</groupId>
+            <artifactId>jfreechart</artifactId>
+            <version>1.0.13</version>
         </dependency>
     </dependencies>
 
