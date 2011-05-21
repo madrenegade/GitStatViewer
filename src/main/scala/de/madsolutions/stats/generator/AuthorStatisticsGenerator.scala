@@ -22,6 +22,8 @@ import scala.xml.Elem
 
 class AuthorStatisticsGenerator extends StatGenerator {
 
+  def name = "Author"
+  
   private var log: Log = null
   
   private val commits = HashMap[String, List[Commit]]()
@@ -29,7 +31,7 @@ class AuthorStatisticsGenerator extends StatGenerator {
   def analyze(log: Log): Elem = {
     this.log = log
     
-    authors foreach {
+    log.authors foreach {
       authorName: String => {
         commits += ((authorName, log.commits filter (_.author == authorName)))
       }
@@ -38,7 +40,7 @@ class AuthorStatisticsGenerator extends StatGenerator {
     <author-stats>
       <authors>
         {
-          authors.sorted map {
+          log.authors.sorted map {
             authorName: String => {
               val commitsFromAuthor = commits.getOrElse(authorName, List())
               val numCommits = commitsFromAuthor.length
@@ -70,18 +72,13 @@ class AuthorStatisticsGenerator extends StatGenerator {
   }
   
   private def commitsByDay(commits: List[Commit]) = {
-    val fmt = new SimpleDateFormat("yyyy-MM-dd")
-    
     commits groupBy {
-      c: Commit => fmt.format(c.date)
+      c: Commit => DateHelper.day(c.date)
     }
   }
             
   private def addedLines(commits: List[Commit]) = {
-    commits.map (_.diff.count {
-       line => {line.startsWith("+") && !line.startsWith("+++")}
-      }
-    ).reduceLeft(_+_)
+    commits.map (_.addedLines).reduceLeft(_+_)
   }
   
   private def deletedLines(commits: List[Commit]) = {
@@ -90,6 +87,4 @@ class AuthorStatisticsGenerator extends StatGenerator {
       }
     ).reduceLeft(_+_)
   }
-  
-  private def authors = log.commits map (_.author) distinct
 }

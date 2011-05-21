@@ -7,6 +7,7 @@ package de.madsolutions.gitstatviewer
 
 import scala.xml.XML
 import scala.util.logging.ConsoleLogger
+import de.madsolutions.stats.generator.StatGenerator
 
 object GitStatViewer extends App {
   
@@ -50,4 +51,8 @@ object GitStatViewer extends App {
   XML.save("git-statistics.xml", XML.loadString(pretty), "UTF-8", xmlDecl = true)
   
   // TODO: transform to xhtml using xslt
+  analyzer.generators foreach {
+    (generator: StatGenerator) => {
+    }
+  }
 }

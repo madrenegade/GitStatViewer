@@ -16,5 +16,11 @@ class Commit(val id: String) {
   def addDiffLine(line: String) = diffBuffer += (line)
   def diff = this.diffBuffer.toList
   
+  def addedLines = {
+    diff.count {
+     line => {line.startsWith("+") && !line.startsWith("+++")}
+    }
+  }
+  
   private var diffBuffer = ListBuffer[String]()
 }

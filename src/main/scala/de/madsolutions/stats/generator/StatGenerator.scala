@@ -10,4 +10,6 @@ import scala.xml.Elem
 
 trait StatGenerator {
   def analyze(log: Log): Elem
+  
+  def name: String
 }

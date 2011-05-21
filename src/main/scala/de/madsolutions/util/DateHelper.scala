@@ -8,6 +8,7 @@ package de.madsolutions.util
 import java.util.Date
 import java.util.GregorianCalendar
 import java.util.Calendar
+import java.text.SimpleDateFormat
 
 object DateHelper {
   
@@ -25,6 +26,12 @@ object DateHelper {
   }
   
   def dayOfWeek(date: Date) = calendar(date).get(Calendar.DAY_OF_WEEK)
+  
+  def day(date: Date) = {
+    val fmt = new SimpleDateFormat("yyyy-MM-dd")
+    
+    fmt.parse(fmt.format(date))
+  }
   
   private def calendar(date: Date) = {
     val calendar = new GregorianCalendar

@@ -14,6 +14,8 @@ import scala.collection.SortedMap
 import scala.xml.Elem
 
 class ActivityStatisticsGenerator extends StatGenerator {
+  
+  def name = "Activity"
 
   private var log: Log = null
   

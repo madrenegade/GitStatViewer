@@ -12,6 +12,8 @@ import scala.collection.SortedSet
 import scala.xml.Elem
 
 class GeneralStatisticsGenerator extends StatGenerator {
+  
+  def name = "General"
 
   private var log: Log = null
   

@@ -14,4 +14,5 @@ class Log {
   def addCommit(commit: Commit) = commitBuffer += (commit)
   def commits: List[Commit] = commitBuffer.toList
   
+  def authors = commits map (_.author) distinct
 }
