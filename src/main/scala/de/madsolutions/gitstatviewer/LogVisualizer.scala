@@ -5,6 +5,7 @@
 
 package de.madsolutions.gitstatviewer
 
+import de.madsolutions.reports.generator.ActivityReport
 import de.madsolutions.reports.generator.AuthorReport
 import de.madsolutions.reports.generator.GeneralReport
 import de.madsolutions.reports.generator.ReportGenerator
@@ -16,7 +17,8 @@ class LogVisualizer(stats: Elem) {
   
   private def reporters = List[ReportGenerator](
     new GeneralReport,
-    new AuthorReport
+    new AuthorReport,
+    new ActivityReport
   )
 
   def generateReport(outputPath: String) = {

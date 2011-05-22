@@ -5,6 +5,7 @@
 
 package de.madsolutions.gitstatviewer
 
+import de.madsolutions.util.DateHelper
 import java.text.SimpleDateFormat
 import scala.util.logging.Logged
 
@@ -42,8 +43,7 @@ class LogExtractor extends Logged {
         log("AUTHOR: " + currentCommit.author)
     }
     case DateLineRE(date) => {
-        val formatter = new SimpleDateFormat("EEE MMM dd hh:mm:ss yyyy Z")
-        currentCommit.date = formatter.parse(date)
+        currentCommit.date = DateHelper.parse(date)
         log("DATE: " + date)
     }
     case DiffLineRE(message, fileA, fileB) => {

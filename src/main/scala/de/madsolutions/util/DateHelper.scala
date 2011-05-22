@@ -12,6 +12,16 @@ import java.text.SimpleDateFormat
 
 object DateHelper {
   
+  def parse(s: String, fmt: String = "EEE MMM dd hh:mm:ss yyyy Z") = {
+    val formatter = new SimpleDateFormat(fmt)
+    formatter.parse(s)
+  }
+  
+  def format(d: Date, fmt: String = "yyyy-MM-dd") = {
+    val formatter = new SimpleDateFormat(fmt)
+    formatter.format(d)
+  }
+  
   def timeSpanBetween(start: Date, end: Date): TimeSpan = {
     val t1 = start.getTime
     val t2 = end.getTime
