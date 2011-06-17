@@ -58,4 +58,11 @@
                 <goal>package</goal>
             </goals>
         </action>
+        <action>
+            <actionName>CUSTOM-Create Runnable Jar</actionName>
+            <displayName>Create Runnable Jar</displayName>
+            <goals>
+                <goal>assembly:assembly</goal>
+            </goals>
+        </action>
     </actions>

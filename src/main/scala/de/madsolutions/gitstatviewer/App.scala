@@ -8,6 +8,9 @@ package de.madsolutions.gitstatviewer
 import scala.xml.XML
 import scala.util.logging.ConsoleLogger
 import de.madsolutions.stats.generator.StatGenerator
+import de.madsolutions.reports.generator.ActivityReport
+import de.madsolutions.reports.generator.AuthorReport
+import de.madsolutions.reports.generator.GeneralReport
 
 object GitStatViewer extends App {
   
@@ -39,17 +42,20 @@ object GitStatViewer extends App {
   val analyzer = new LogAnalyzer
   val statistics = analyzer.analyze(log)
     
-  val end = System.currentTimeMillis
-    
-  println("Logmining took " + (end-start) + "ms")
-    
   val printer = new scala.xml.PrettyPrinter(80, 4)
   val pretty = printer format statistics
   
-  println(pretty)  
+  //println(pretty)  
   
-  XML.save("git-statistics.xml", XML.loadString(pretty), "UTF-8", xmlDecl = true)
+  //XML.save("git-statistics.xml", XML.loadString(pretty), "UTF-8", xmlDecl = true)
   
-  val visualizer = new LogVisualizer(statistics)
-  visualizer.generateReport("/home/madrenegade/Desktop/out")
+  val visualizer = new LogVisualizer(statistics) {
+    val reporters = new GeneralReport :: new AuthorReport :: new ActivityReport :: Nil
+  }
+  
+  visualizer.generateReport("gitstats")
+  
+  val end = System.currentTimeMillis
+    
+  println("Logmining took " + (end-start) + "ms")
 }
