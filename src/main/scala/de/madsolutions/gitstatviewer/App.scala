@@ -48,9 +48,9 @@ object GitStatViewer extends App {
   //println(pretty)  
   
   //XML.save("git-statistics.xml", XML.loadString(pretty), "UTF-8", xmlDecl = true)
-  
-  val visualizer = new LogVisualizer(statistics) {
-    val reporters = new GeneralReport :: new AuthorReport :: new ActivityReport :: Nil
+   
+  val visualizer = new LogVisualizer(statistics) {  
+    override val reporters = new GeneralReport :: new AuthorReport :: new ActivityReport :: Nil
   }
   
   visualizer.generateReport("gitstats")

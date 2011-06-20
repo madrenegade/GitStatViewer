@@ -10,51 +10,49 @@ import java.io.File
 import scala.xml.Elem
 import scala.xml.XML
 
-trait LogVisualizerContext {
-  class LogVisualizer(stats: Elem) {
-
-    def generateReport(outputPath: String) = {
-      val dir = new File(outputPath)
-      dir.mkdir
-
-      val report = generatePage("GitStatViewer - Report",
-                                <div>{
-            reporters map {
-              generator: ReportGenerator => {
-                // create xhtml from this
-                val dir = new File(outputPath + "/" + generator.name)
-                dir.mkdir
-
-                val partialReport = <div>
-                  {generator.generateReport(outputPath + "/" + generator.name, stats)}
-                  <hr />
-                  <a href="../report.xhtml">Back</a>
-                </div>
-
-                XML.save(outputPath + "/" + generator.name + "/report.xhtml", generatePage(generator.name, partialReport), "UTF-8", xmlDecl = true)
-
-                <a href={reportUrl(generator.name)}>{generator.name}</a><br />
-              }
-            }
-          }</div>)
-
-      XML.save(outputPath + "/report.xhtml", report, "UTF-8", xmlDecl = true)
-    }
-
-    private def reportUrl(name: String) = "./" + name + "/report.xhtml"
-
-    private def generatePage(title: String, body: Elem) = {
-      <html xmlns="http://www.w3.org/1999/xhtml">
-        <head>
-          <title>{title}</title>
-        </head>
-        <body>
-          <h1>{title}</h1>
-          {body}
-        </body>
-      </html>
-    }
-  }
+class LogVisualizer(stats: Elem) {
   
-  protected val reporters: List[ReportGenerator]
+  protected val reporters: List[ReportGenerator] = List()
+
+  def generateReport(outputPath: String) = {
+    val dir = new File(outputPath)
+    dir.mkdir
+
+    val report = generatePage("GitStatViewer - Report",
+                              <div>{
+          reporters map {
+            generator: ReportGenerator => {
+              // create xhtml from this
+              val dir = new File(outputPath + "/" + generator.name)
+              dir.mkdir
+
+              val partialReport = <div>
+                {generator.generateReport(outputPath + "/" + generator.name, stats)}
+                <hr />
+                <a href="../report.xhtml">Back</a>
+              </div>
+
+              XML.save(outputPath + "/" + generator.name + "/report.xhtml", generatePage(generator.name, partialReport), "UTF-8", xmlDecl = true)
+
+              <a href={reportUrl(generator.name)}>{generator.name}</a><br />
+            }
+          }
+        }</div>)
+
+    XML.save(outputPath + "/report.xhtml", report, "UTF-8", xmlDecl = true)
+  }
+
+  private def reportUrl(name: String) = "./" + name + "/report.xhtml"
+
+  private def generatePage(title: String, body: Elem) = {
+    <html xmlns="http://www.w3.org/1999/xhtml">
+      <head>
+        <title>{title}</title>
+      </head>
+      <body>
+        <h1>{title}</h1>
+        {body}
+      </body>
+    </html>
+  }
 }

@@ -23,7 +23,7 @@ object LogFetcher {
     {
       line = bufferedReader.readLine
       builder.append(line + "\n")
-    } while(line != null)
+    } while(line != null) 
     
     builder.mkString
   }
