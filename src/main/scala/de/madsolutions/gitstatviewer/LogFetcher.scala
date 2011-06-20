@@ -5,22 +5,25 @@
 
 package de.madsolutions.gitstatviewer
 
+import java.io.BufferedReader
 import java.io.File
-import scala.io.Source
+import java.io.InputStreamReader
 
 object LogFetcher {
   def fetch(directory: String): String = {
     val process = Runtime.getRuntime.exec("git log -p", Array[String](), new File(directory))
-    val is = process.getInputStream
+    val inputStream = process.getInputStream
+    val bufferedReader = new BufferedReader(new InputStreamReader(inputStream))
     
     val builder = StringBuilder.newBuilder
     
-    var i = 0
+    var line: String = null
     
-    while(i != -1) {
-      i = is.read
-      builder.append(i.toChar)
-    }
+    do
+    {
+      line = bufferedReader.readLine
+      builder.append(line + "\n")
+    } while(line != null)
     
     builder.mkString
   }
