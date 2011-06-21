@@ -12,7 +12,7 @@ import de.madsolutions.reports.generator.ActivityReport
 import de.madsolutions.reports.generator.AuthorReport
 import de.madsolutions.reports.generator.GeneralReport
 
-object GitStatViewer extends App {
+object GitStatViewer extends App with ConsoleLogger {
   
   val directory = args match {
     case Array() => {
@@ -31,23 +31,16 @@ object GitStatViewer extends App {
     
   val start = System.currentTimeMillis
     
-  println("Fetching logs")
+  log("Fetching logs")
   val logData = LogFetcher.fetch(directory)
     
-  println("Extracting logs")
+  log("Extracting logs")
   val logExtractor = new LogExtractor //with ConsoleLogger
   val log = logExtractor.extractFrom(logData)
     
-  println("Analyzing logs")
+  log("Analyzing logs")
   val analyzer = new LogAnalyzer
   val statistics = analyzer.analyze(log)
-    
-  val printer = new scala.xml.PrettyPrinter(80, 4)
-  val pretty = printer format statistics
-  
-  //println(pretty)  
-  
-  //XML.save("git-statistics.xml", XML.loadString(pretty), "UTF-8", xmlDecl = true)
    
   val visualizer = new LogVisualizer(statistics) {  
     override val reporters = new GeneralReport :: new AuthorReport :: new ActivityReport :: Nil
@@ -57,5 +50,5 @@ object GitStatViewer extends App {
   
   val end = System.currentTimeMillis
     
-  println("Logmining took " + (end-start) + "ms")
+  println("Finished after " + (end-start) + "ms")
 }
