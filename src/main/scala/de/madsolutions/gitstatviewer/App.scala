@@ -7,6 +7,7 @@ package de.madsolutions.gitstatviewer
 
 import scala.xml.XML
 import scala.util.logging.ConsoleLogger
+import de.madsolutions.util.ProgramOptions
 import de.madsolutions.stats.generator.StatGenerator
 import de.madsolutions.reports.generator.ActivityReport
 import de.madsolutions.reports.generator.AuthorReport
@@ -28,6 +29,8 @@ object GitStatViewer extends App with ConsoleLogger {
         sys.exit(1)
       }
   }
+  
+  log("Output will be saved to directory gitstats")
     
   val start = System.currentTimeMillis
     
@@ -35,7 +38,7 @@ object GitStatViewer extends App with ConsoleLogger {
   val logData = LogFetcher.fetch(directory)
     
   log("Extracting logs")
-  val logExtractor = new LogExtractor //with ConsoleLogger
+  val logExtractor = new LogExtractor
   val log = logExtractor.extractFrom(logData)
     
   log("Analyzing logs")
