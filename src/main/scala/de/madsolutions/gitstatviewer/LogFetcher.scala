@@ -9,7 +9,5 @@ import java.io.File
 import scala.sys.process._
 
 object LogFetcher {
-  def fetch(directory: String): String = {
-    Process("git log -p", new File(directory)) !!
-  }
+  def fetch(directory: String) = Process("git log -p", new File(directory)) !!
 }
