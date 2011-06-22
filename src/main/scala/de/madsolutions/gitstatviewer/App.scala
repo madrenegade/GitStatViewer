@@ -7,7 +7,6 @@ package de.madsolutions.gitstatviewer
 
 import scala.xml.XML
 import scala.util.logging.ConsoleLogger
-import de.madsolutions.util.ProgramOptions
 import de.madsolutions.stats.generator.StatGenerator
 import de.madsolutions.reports.generator.ActivityReport
 import de.madsolutions.reports.generator.AuthorReport
