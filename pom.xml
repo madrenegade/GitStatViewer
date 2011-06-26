@@ -23,6 +23,11 @@
     </properties>
 
     <repositories>
+    	 <repository>
+        	<id>fusesource.org</id>
+        	<name>Fusesource Repository</name>
+        	<url>http://repo.fusesource.com/nexus/content/repositories/public</url>
+        </repository>
         <repository>
             <id>scala-tools.org</id>
             <name>Scala-Tools Maven2 Repository</name>
@@ -37,9 +42,9 @@
 
     <pluginRepositories>
         <pluginRepository>
-            <id>scala-tools.org</id>
-            <name>Scala-Tools Maven2 Repository</name>
-            <url>http://scala-tools.org/repo-releases</url>
+        	<id>fusesource.org</id>
+        	<name>Fusesource Repository</name>
+        	<url>http://repo.fusesource.com/nexus/content/repositories/public</url>
         </pluginRepository>
         <pluginRepository>
             <id>jboss.org</id>
@@ -69,15 +74,14 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.scalatest</groupId>
-            <artifactId>scalatest</artifactId>
-            <version>1.2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>jfree</groupId>
             <artifactId>jfreechart</artifactId>
             <version>1.0.13</version>
+        </dependency>
+        <dependency>
+        	<groupId>org.fusesource.scalate</groupId>
+        	<artifactId>scalate-core</artifactId>
+        	<version>1.5.0</version>
         </dependency>
     </dependencies>
 
