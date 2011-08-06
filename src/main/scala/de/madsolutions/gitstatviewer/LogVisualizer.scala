@@ -12,12 +12,8 @@ import scala.xml.XML
 import scala.xml.EntityRef
 import scala.xml.dtd.DocType
 import scala.xml.dtd.SystemID
-import org.fusesource.scalate._
-import org.fusesource.scalate.TemplateEngine
 
 class LogVisualizer(stats: Elem) {
-  
-  private val engine = new TemplateEngine
   
   private val indexFile = "report.html"
   private val backHref = "../" + indexFile
