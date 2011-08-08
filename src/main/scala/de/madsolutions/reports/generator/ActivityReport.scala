@@ -25,7 +25,6 @@ class ActivityReport extends ReportGenerator {
   def generateReport(outputPath: String, stats: Elem): Elem = {
     this.outputPath = outputPath
     
-    
     val authors = (stats \ "author-activity" \ "authors")(0)
     val firstCommit = DateHelper parse((stats \ "general" \ "firstCommit").text, "EEE MMM dd hh:mm:ss Z yyyy")
     val lastCommit = DateHelper parse((stats \ "general" \ "lastCommit").text, "EEE MMM dd hh:mm:ss Z yyyy")
@@ -41,8 +40,6 @@ class ActivityReport extends ReportGenerator {
     
     val firstDay = new Day(firstCommit)
     val lastDay = new Day(lastCommit)
-    
-    
     
     (authors \ "author") foreach {
       author: Node => {
