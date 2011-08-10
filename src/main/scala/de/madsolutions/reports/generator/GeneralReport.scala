@@ -14,33 +14,35 @@ class GeneralReport extends ReportGenerator {
 
   def generateReport(outputPath: String, stats: Elem): Elem = {
     <table>
-      <tr>
-        <td>Total commits:</td>
-        <td>{(stats \ "general" \ "numCommits").text}</td>
-      </tr>
-      <tr>
-        <td>Authors:</td>
-        <td>
-          <ol>
+      {
+        reportData(stats) map {
+          kv: (String, Node) =>
             {
-              (stats \ "general" \ "authors" \ "author") map {
-                author: Node => {
-                  <li>{author.text}</li>
-                }
-              }
+              <tr>
+                <td>{ kv._1 }:</td>
+                <td>{ kv._2 }</td>
+              </tr>
             }
-          </ol>
-        </td>
-      </tr>
-      <tr>
-        <td>First commit:</td>
-        <td>{(stats \ "general" \ "firstCommit").text}</td>
-      </tr>
-      <tr>
-        <td>Last commit:</td>
-        <td>{(stats \ "general" \ "lastCommit").text}</td>
-      </tr>
+        }
+      }
     </table>
   }
-  
+
+  private def reportData(stats: Elem) = Map[String, Node](
+    "Authors" -> <ol>
+                   {
+                     (stats \ "general" \ "authors" \ "author") map {
+                       author: Node =>
+                         {
+                           <li>{ author.text }</li>
+                         }
+                     }
+                   }
+                 </ol>,
+    "Project age" -> (stats \ "general" \ "projectAge").head,
+    "Total commits" -> (stats \ "general" \ "numCommits").head,
+    "First commit" -> (stats \ "general" \ "firstCommit").head,
+    "Last commit" -> (stats \ "general" \ "lastCommit").head,
+    "Lines of code" -> (stats \ "general" \ "linesOfCode").head,
+    "Commits per day" -> (stats \ "general" \ "commitsPerDay").head)
 }
