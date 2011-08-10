@@ -72,9 +72,12 @@ class LogVisualizer(stats: Elem) {
   private def createMenu() = reporters map {
     generator: ReportGenerator =>
       {
-        <a href={ reportUrl(generator.name) }>
-          <img style="height: 48px" src={ generatorIcon(generator) } alt={ generator.name } title={ generator.name }/>
-        </a>
+        <div class="dp20"><a href={ reportUrl(generator.name) }>
+          <p>
+        	<img style="height: 48px" src={ generatorIcon(generator) } alt={ generator.name } title={ generator.name }/>
+        	</p>
+          <p>{generator.name}</p>
+        </a></div>
       }
   }
 

@@ -24,8 +24,8 @@ class GeneralReport extends ReportGenerator {
           <ol>
             {
               (stats \ "general" \ "authors" \ "author") map {
-                n: Node => {
-                  <li>{n.text}</li>
+                author: Node => {
+                  <li>{author.text}</li>
                 }
               }
             }
