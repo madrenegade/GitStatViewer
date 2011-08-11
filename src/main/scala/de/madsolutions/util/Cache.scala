@@ -23,7 +23,7 @@ object Cache {
     authors = log.authors.sorted
   }
   
-  lazy val firstCommit = commits.first
+  lazy val firstCommit = commits.head
   lazy val lastCommit = commits.last
   
   lazy val linesOfCode = {

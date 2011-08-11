@@ -25,7 +25,7 @@ object GitStatViewer extends App with ConsoleLogger {
         x
       }
     case _ => {
-        println("Invalid number of arguments")
+        println("Invalid number of arguments: %d (%s)".format(args.size, args.mkString(",")))
         sys.exit(1)
       }
   }
