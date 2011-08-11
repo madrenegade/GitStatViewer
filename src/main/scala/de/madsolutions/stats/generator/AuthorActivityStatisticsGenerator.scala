@@ -13,6 +13,7 @@ import java.util.Date
 import scala.collection.SortedMap
 import scala.collection.mutable.HashMap
 import scala.xml.Elem
+import de.madsolutions.util.Cache
 
 class AuthorActivityStatisticsGenerator extends StatGenerator {
 
@@ -20,23 +21,15 @@ class AuthorActivityStatisticsGenerator extends StatGenerator {
   
   private var log: Log = null
   
-  private val commits = HashMap[String, List[Commit]]()
-  
   def analyze(log: Log): Elem = {
     this.log = log
-    
-    log.authors foreach {
-      authorName: String => {
-        commits += ((authorName, log.commits filter (_.author == authorName)))
-      }
-    }
     
     <author-activity>
       <authors>
         {
           log.authors.sorted map {
             authorName: String => {
-              val commitsFromAuthor = commits.getOrElse(authorName, List())
+              val commitsFromAuthor = Cache.commitsByAuthor.getOrElse(authorName, List())
               
               <author name={authorName}>
                 {

@@ -12,6 +12,7 @@ import java.util.Calendar
 import java.util.GregorianCalendar
 import scala.collection.SortedMap
 import scala.xml.Elem
+import de.madsolutions.util.Cache
 
 class ActivityStatisticsGenerator extends StatGenerator {
   
@@ -25,7 +26,7 @@ class ActivityStatisticsGenerator extends StatGenerator {
     <activity>
       <weekly>
         {
-          SortedMap[Int, Int]() ++ commitsByWeek map {
+          SortedMap[Int, Int]() ++ Cache.commitsByWeek map {
             (kv: (Int, Int)) => {
               <numCommits weeksAgo={kv._1.toString}>{kv._2.toString}</numCommits>
             }
@@ -34,7 +35,7 @@ class ActivityStatisticsGenerator extends StatGenerator {
       </weekly>
       <hourOfDay>
         {
-          SortedMap[Int, Int]() ++ commitsByHour map {
+          SortedMap[Int, Int]() ++ Cache.commitsByHour map {
             (kv: (Int, Int)) => {
               <numCommits hour={kv._1.toString}>{kv._2.toString}</numCommits>
             }
@@ -43,7 +44,7 @@ class ActivityStatisticsGenerator extends StatGenerator {
       </hourOfDay>
       <dayOfWeek>
         {
-          SortedMap[Int, Int]() ++ commitsByDay map {
+          SortedMap[Int, Int]() ++ Cache.commitsByDay map {
             (kv: (Int, Int)) => {
               <numCommits day={kv._1.toString}>{kv._2.toString}</numCommits>
             }
@@ -53,39 +54,5 @@ class ActivityStatisticsGenerator extends StatGenerator {
     </activity>
   }
   
-  private def commitsByWeek = {
-    log.commits.groupBy {
-      c: Commit => {
-        DateHelper.timeSpanBetweenNowAnd(c.date).inWeeks.toInt
-      }
-    }.map {
-      (kv: (Int, List[Commit])) => {
-        (kv._1, kv._2.length)
-      }
-    }
-  }
   
-  private def commitsByHour = {
-    log.commits.groupBy {
-      c: Commit => {
-        DateHelper.hour(c.date).toInt
-      }
-    }.map {
-      (kv: (Int, List[Commit])) => {
-        (kv._1, kv._2.length)
-      }
-    }
-  }
-  
-  private def commitsByDay = {
-    log.commits.groupBy {
-      c: Commit => {
-        DateHelper.dayOfWeek(c.date)
-      }
-    }.map {
-      (kv: (Int, List[Commit])) => {
-        (kv._1, kv._2.length)
-      }
-    }
-  }
 }

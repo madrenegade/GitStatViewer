@@ -11,6 +11,7 @@ import de.madsolutions.stats.generator.StatGenerator
 import de.madsolutions.reports.generator.ActivityReport
 import de.madsolutions.reports.generator.AuthorReport
 import de.madsolutions.reports.generator.GeneralReport
+import de.madsolutions.util.Cache
 
 object GitStatViewer extends App with ConsoleLogger {
   
@@ -35,10 +36,12 @@ object GitStatViewer extends App with ConsoleLogger {
     
   log("Fetching logs")
   val logData = LogFetcher.fetch(directory)
-    
+  
   log("Extracting logs")
   val logExtractor = new LogExtractor
   val log = logExtractor.extractFrom(logData)
+  
+  Cache.init(log)
     
   log("Analyzing logs")
   val analyzer = new LogAnalyzer
@@ -48,6 +51,7 @@ object GitStatViewer extends App with ConsoleLogger {
     override val reporters = new GeneralReport :: new AuthorReport :: new ActivityReport :: Nil
   }
   
+  log("Generating final report")
   visualizer.generateReport("gitstats")
   
   val end = System.currentTimeMillis
