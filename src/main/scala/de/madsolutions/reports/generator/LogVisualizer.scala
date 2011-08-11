@@ -39,7 +39,6 @@ class LogVisualizer(stats: Elem) {
     reporters.par foreach {
       generator: ReportGenerator =>
         {
-          println("REPORT " + generator.name)
           val start = System.currentTimeMillis
           val partialReport = <div>
                                 { generator.generateReport(outputPath + "/", stats) }
@@ -49,7 +48,6 @@ class LogVisualizer(stats: Elem) {
 
           copyIcon(generator)
           XML.save(outputPath + "/" + generator.name + ".html", generatePage(generator.name, partialReport), "UTF-8", xmlDecl = true)
-          println("TIME: " + (System.currentTimeMillis - start))
         }
     }
     
