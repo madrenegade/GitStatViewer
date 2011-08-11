@@ -36,22 +36,24 @@ class LogVisualizer(stats: Elem) {
     val iconDir = new File(iconPath)
     iconDir.mkdir
 
-    val report = generatePage("GitStatViewer - Report",
-      <div>{
-        reporters map {
-          generator: ReportGenerator =>
-            {
-              val partialReport = <div>
-                                    { generator.generateReport(outputPath + "/", stats) }
-                                    <hr/>
-                                    <a href={ backHref }>Back</a>
-                                  </div>
+    reporters.par foreach {
+      generator: ReportGenerator =>
+        {
+          println("REPORT " + generator.name)
+          val start = System.currentTimeMillis
+          val partialReport = <div>
+                                { generator.generateReport(outputPath + "/", stats) }
+                                <hr/>
+                                <a href={ backHref }>Back</a>
+                              </div>
 
-              copyIcon(generator)
-              XML.save(outputPath + "/" + generator.name + ".html", generatePage(generator.name, partialReport), "UTF-8", xmlDecl = true)
-            }
+          copyIcon(generator)
+          XML.save(outputPath + "/" + generator.name + ".html", generatePage(generator.name, partialReport), "UTF-8", xmlDecl = true)
+          println("TIME: " + (System.currentTimeMillis - start))
         }
-      }</div>)
+    }
+    
+    val report = generatePage("GitStatViewer - Report", <div></div>)
 
     XML.save(outputPath + "/" + indexFile, report, "UTF-8", xmlDecl = false, new DocType("html", SystemID("about:legacy-compat"), Nil))
   }
@@ -62,31 +64,34 @@ class LogVisualizer(stats: Elem) {
     val templateSource = TemplateSource.fromFile("template.mustache")
 
     val attributes = Map(
-      "menu" -> createMenu(),
+      "menu" -> menu,
       "title" -> title,
       "body" -> body)
 
     XML.loadString(engine.layout(templateSource, attributes))
   }
 
-  private def createMenu() = reporters map {
+  private lazy val menu = reporters map {
     generator: ReportGenerator =>
       {
-        def getStyleClass = reporters.size match {
-          case 1 => "dp100"
-          case 2 => "dp50"
-          case 3 => "dp33"
-          case 4 => "dp25"
-          case 5 => "dp20"
-          case _ => ""
-        }
-        <div class={getStyleClass}><a href={ reportUrl(generator.name) }>
-          <p>
-        	<img style="height: 48px" src={ generatorIcon(generator) } alt={ generator.name } title={ generator.name }/>
-        	</p>
-          <p>{generator.name}</p>
-        </a></div>
+        <div class={ styleClass }>
+          <a href={ reportUrl(generator.name) }>
+            <p>
+              <img style="height: 48px" src={ generatorIcon(generator) } alt={ generator.name } title={ generator.name }/>
+            </p>
+            <p>{ generator.name }</p>
+          </a>
+        </div>
       }
+  }
+
+  private lazy val styleClass = reporters.size match {
+    case 1 => "dp100"
+    case 2 => "dp50"
+    case 3 => "dp33"
+    case 4 => "dp25"
+    case 5 => "dp20"
+    case _ => ""
   }
 
   private def copyIcon(generator: ReportGenerator) {
