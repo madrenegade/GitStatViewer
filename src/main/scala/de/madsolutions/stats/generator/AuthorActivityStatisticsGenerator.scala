@@ -33,7 +33,7 @@ class AuthorActivityStatisticsGenerator extends StatGenerator {
               
               <author name={authorName}>
                 {
-                  SortedMap[String, List[Commit]]() ++ commitsByDay(commitsFromAuthor) map {
+                  commitsByDay(commitsFromAuthor) map {
                     (kv: (String, List[Commit])) => {
                       <activity date={kv._1}>
                         <addedLines>{addedLines(kv._2)}</addedLines>
@@ -67,15 +67,13 @@ class AuthorActivityStatisticsGenerator extends StatGenerator {
   }
   
   private def commitsByDay(commits: List[Commit]) = {
-    val fmt = new SimpleDateFormat("yyyy-MM-dd")
-    
     commits.groupBy {
       c: Commit => {
         DateHelper.day(c.date)
       }
     }.map {
       (kv: (Date, List[Commit])) => {
-        (fmt.format(kv._1), kv._2)
+        (DateHelper.format(kv._1), kv._2)
       }
     }
   }

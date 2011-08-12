@@ -14,6 +14,7 @@ import java.util.Date
 import java.util.GregorianCalendar
 import scala.collection.mutable.HashMap
 import scala.xml.Elem
+import de.madsolutions.util.Cache
 
 // TODO: cumulated added lines per author
 // TODO: cumulated deleted lines per author
@@ -26,23 +27,15 @@ class AuthorStatisticsGenerator extends StatGenerator {
   
   private var log: Log = null
   
-  private val commits = HashMap[String, List[Commit]]()
-  
   def analyze(log: Log): Elem = {
     this.log = log
-    
-    log.authors foreach {
-      authorName: String => {
-        commits += ((authorName, log.commits filter (_.author == authorName)))
-      }
-    }
     
     <author-stats>
       <authors>
         {
           log.authors.sorted map {
             authorName: String => {
-              val commitsFromAuthor = commits.getOrElse(authorName, List())
+              val commitsFromAuthor = Cache.commitsByAuthor.getOrElse(authorName, List())
               val numCommits = commitsFromAuthor.length
               <author name={authorName} commits={numCommits.toString}>
                 <percentageOfAllCommits>{(numCommits.asInstanceOf[Double] / log.commits.length).toString}</percentageOfAllCommits>

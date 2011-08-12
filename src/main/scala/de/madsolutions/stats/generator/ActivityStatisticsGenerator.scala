@@ -26,7 +26,7 @@ class ActivityStatisticsGenerator extends StatGenerator {
     <activity>
       <weekly>
         {
-          SortedMap[Int, Int]() ++ Cache.commitsByWeek map {
+          Cache.commitsByWeek map {
             (kv: (Int, Int)) => {
               <numCommits weeksAgo={kv._1.toString}>{kv._2.toString}</numCommits>
             }
@@ -35,7 +35,7 @@ class ActivityStatisticsGenerator extends StatGenerator {
       </weekly>
       <hourOfDay>
         {
-          SortedMap[Int, Int]() ++ Cache.commitsByHour map {
+          Cache.commitsByHour map {
             (kv: (Int, Int)) => {
               <numCommits hour={kv._1.toString}>{kv._2.toString}</numCommits>
             }
@@ -44,7 +44,7 @@ class ActivityStatisticsGenerator extends StatGenerator {
       </hourOfDay>
       <dayOfWeek>
         {
-          SortedMap[Int, Int]() ++ Cache.commitsByDay map {
+          Cache.commitsByDay map {
             (kv: (Int, Int)) => {
               <numCommits day={kv._1.toString}>{kv._2.toString}</numCommits>
             }

@@ -16,17 +16,19 @@ class Commit(val id: String) {
   def addDiffLine(line: String) = diffBuffer += (line)
   def diff = this.diffBuffer.toList
   
-  def addedLines = {
+  lazy val addedLines = {
     diff.count {
       line => {line.startsWith("+") && !line.startsWith("+++")}
     }
   }
   
-  def deletedLines = {
+  lazy val deletedLines = {
     diff.count {
       line => {line.startsWith("-") && !line.startsWith("---")}
     }
   }
+  
+  lazy val approximatedLines = addedLines - deletedLines
   
   private var diffBuffer = ListBuffer[String]()
 }
