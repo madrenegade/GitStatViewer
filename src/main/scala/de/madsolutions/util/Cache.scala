@@ -101,7 +101,7 @@ object Cache {
           DateHelper.monthOfYear(c.date)
         }
     }.map {
-      (kv: (String, List[Commit])) =>
+      (kv: (Int, List[Commit])) =>
         {
           (kv._1, kv._2.length)
         }

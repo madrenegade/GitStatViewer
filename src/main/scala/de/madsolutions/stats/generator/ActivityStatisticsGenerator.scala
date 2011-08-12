@@ -67,9 +67,9 @@ class ActivityStatisticsGenerator extends StatGenerator {
       <monthOfYear>
         {
           Cache.commitsByMonth map {
-            (kv: (String, Int)) =>
+            (kv: (Int, Int)) =>
               {
-                <numCommits month={ kv._1 }>{ kv._2.toString }</numCommits>
+                <numCommits month={ kv._1.toString }>{ kv._2.toString }</numCommits>
               }
           }
         }

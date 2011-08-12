@@ -26,6 +26,7 @@ class ActivityReport extends ReportGenerator {
     this.outputPath = outputPath
 
     val authors = (stats \ "author-activity" \ "authors")(0)
+    val activity = (stats \ "activity")(0)
     val firstCommit = DateHelper parse ((stats \ "general" \ "firstCommit").text, "EEE MMM dd hh:mm:ss Z yyyy")
     val lastCommit = DateHelper parse ((stats \ "general" \ "lastCommit").text, "EEE MMM dd hh:mm:ss Z yyyy")
 
@@ -33,6 +34,8 @@ class ActivityReport extends ReportGenerator {
       <img src={ addedLinesOverTimeChart(authors, firstCommit, lastCommit) }/>
       <hr/>
       <img src={ deletedLinesOverTimeChart(authors, firstCommit, lastCommit) }/>
+      <hr/>
+      <img src={ commitsByMonthChart(activity, firstCommit, lastCommit) }/>
     </div>
   }
 
@@ -95,6 +98,32 @@ class ActivityReport extends ReportGenerator {
     }
 
     val chart = ChartFactory.createTimeSeriesChart("DeletedLinesOfCode", "Date", "Lines of code", dataset, true, true, false)
+    Chart.save(outputPath, chart)
+  }
+
+  private def commitsByMonthChart(activity: Node, firstCommit: Date, lastCommit: Date) = {
+
+    val dataset = new TimeSeriesCollection
+
+    val firstMonth = new Month(firstCommit)
+    val lastMonth = new Month(lastCommit)
+
+    val series = new TimeSeries("")
+    var currentMonth = firstMonth
+
+    while (currentMonth.compareTo(lastMonth) <= 0) {
+      val numCommits = (activity \ "monthOfYear" \ "numCommits").find { n: Node => (n \ "@month").text.toInt == currentMonth.getMonth } match {
+        case Some(node) => node.text.toInt
+        case None => 0
+      }
+
+      series.add(currentMonth, numCommits)
+      currentMonth = currentMonth.next.asInstanceOf[Month]
+    }
+
+    dataset.addSeries(series)
+
+    val chart = ChartFactory.createTimeSeriesChart("CommitsByMonth", "Date", "# commits", dataset, true, true, false)
     Chart.save(outputPath, chart)
   }
 }
