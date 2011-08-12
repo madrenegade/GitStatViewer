@@ -51,6 +51,21 @@ object Cache {
     }
   }
 
+  lazy val commitsByDay = {
+    commits.groupBy {
+      c: Commit =>
+        {
+          DateHelper.timeSpanBetweenNowAnd(c.date).inDays.toInt
+        }
+    }.map {
+      (kv: (Int, List[Commit])) =>
+        kv._2.firstOption match {
+          case Some(commit) => (DateHelper.format(commit.date), kv._2.length)
+          case None => (null, kv._2.length)
+        }
+    }
+  }
+
   lazy val commitsByHour = {
     commits.groupBy {
       c: Commit =>
@@ -65,7 +80,7 @@ object Cache {
     }
   }
 
-  lazy val commitsByDay = {
+  lazy val commitsByWeekDay = {
     commits.groupBy {
       c: Commit =>
         {
@@ -73,6 +88,20 @@ object Cache {
         }
     }.map {
       (kv: (Int, List[Commit])) =>
+        {
+          (kv._1, kv._2.length)
+        }
+    }
+  }
+
+  lazy val commitsByMonth = {
+    commits.groupBy {
+      c: Commit =>
+        {
+          DateHelper.monthOfYear(c.date)
+        }
+    }.map {
+      (kv: (String, List[Commit])) =>
         {
           (kv._1, kv._2.length)
         }
@@ -87,20 +116,22 @@ object Cache {
         }
     }
   }
-  
+
   def addedLinesFor(commits: List[Commit]) = {
     commits map {
-      c: Commit => {
-        c.addedLines
-      }
-    } reduceLeft(_+_)
+      c: Commit =>
+        {
+          c.addedLines
+        }
+    } reduceLeft (_ + _)
   }
-  
+
   def deletedLinesFor(commits: List[Commit]) = {
     commits map {
-      c: Commit => {
-        c.deletedLines
-      }
-    } reduceLeft(_+_)
+      c: Commit =>
+        {
+          c.deletedLines
+        }
+    } reduceLeft (_ + _)
   }
 }

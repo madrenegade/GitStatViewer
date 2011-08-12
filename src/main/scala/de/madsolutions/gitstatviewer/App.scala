@@ -12,6 +12,7 @@ import de.madsolutions.reports.generator.ActivityReport
 import de.madsolutions.reports.generator.AuthorReport
 import de.madsolutions.reports.generator.GeneralReport
 import de.madsolutions.util.Cache
+import scala.xml.PrettyPrinter
 
 object GitStatViewer extends App with ConsoleLogger {
   
@@ -46,6 +47,10 @@ object GitStatViewer extends App with ConsoleLogger {
   log("Analyzing logs")
   val analyzer = new LogAnalyzer
   val statistics = analyzer.analyze(log)
+  
+  val prettyPrinter = new PrettyPrinter(80, 4)
+  val prettyXml = XML.loadString(prettyPrinter.format(statistics))
+  XML.save("statistics.xml", prettyXml, xmlDecl = true)
    
   val visualizer = new LogVisualizer(statistics) {  
     override val reporters = new GeneralReport :: new AuthorReport :: new ActivityReport :: Nil

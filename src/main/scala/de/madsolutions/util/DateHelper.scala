@@ -37,6 +37,21 @@ object DateHelper {
   
   def dayOfWeek(date: Date) = calendar(date).get(Calendar.DAY_OF_WEEK)
   
+  def monthOfYear(date: Date) = calendar(date).get(Calendar.MONTH) match {
+    case Calendar.JANUARY => "JANUARY"
+    case Calendar.FEBRUARY => "FEBRUARY"
+    case Calendar.MARCH => "MARCH"
+    case Calendar.APRIL => "APRIL"
+    case Calendar.MAY => "MAY"
+    case Calendar.JUNE => "JUNE"
+    case Calendar.JULY => "JULY"
+    case Calendar.AUGUST => "AUGUST"
+    case Calendar.SEPTEMBER => "SEPTEMBER"
+    case Calendar.OCTOBER => "OCTOBER"
+    case Calendar.NOVEMBER => "NOVEMBER"
+    case Calendar.DECEMBER => "DECEMBER"
+  }
+  
   def day(date: Date) = {
     val fmt = new SimpleDateFormat("yyyy-MM-dd")
     
