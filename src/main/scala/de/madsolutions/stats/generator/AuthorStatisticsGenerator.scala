@@ -43,7 +43,7 @@ class AuthorStatisticsGenerator extends StatGenerator {
                 <lastCommit>{commitsFromAuthor.map(_.date).sorted.last}</lastCommit>
                 <addedLines>{addedLines(commitsFromAuthor).toString}</addedLines>
                 <deletedLines>{deletedLines(commitsFromAuthor).toString}</deletedLines>
-                <avgCommitsPerDay>{avgCommitsPerDay(commitsFromAuthor, age).toString}</avgCommitsPerDay>
+                <avgCommitsPerDay>{avgCommitsPerDay(commitsFromAuthor, Cache.projectAge).toString}</avgCommitsPerDay>
                 <activeDays>{commitsByDay(commitsFromAuthor).size.toString}</activeDays>
               </author>
             }
@@ -51,13 +51,6 @@ class AuthorStatisticsGenerator extends StatGenerator {
         }
       </authors>
     </author-stats>
-  }
-  
-  private def age = {
-    val last = log.commits.map (_.date).sorted.last
-    val first = log.commits.map (_.date).sorted.head
-    
-    DateHelper.timeSpanBetween(first, last).inDays
   }
   
   private def avgCommitsPerDay(commits: List[Commit], age: Double) = {

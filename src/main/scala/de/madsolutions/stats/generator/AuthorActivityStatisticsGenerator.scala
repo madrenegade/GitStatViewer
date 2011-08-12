@@ -36,8 +36,8 @@ class AuthorActivityStatisticsGenerator extends StatGenerator {
                   commitsByDay(commitsFromAuthor) map {
                     (kv: (String, List[Commit])) => {
                       <activity date={kv._1}>
-                        <addedLines>{addedLines(kv._2)}</addedLines>
-                        <deletedLines>{deletedLines(kv._2)}</deletedLines>
+                        <addedLines>{Cache.addedLinesFor(kv._2)}</addedLines>
+                        <deletedLines>{Cache.deletedLinesFor(kv._2)}</deletedLines>
                       </activity>
                     }
                   }
@@ -48,22 +48,6 @@ class AuthorActivityStatisticsGenerator extends StatGenerator {
         }
       </authors>
     </author-activity>
-  }
-  
-  private def addedLines(commits: List[Commit]) = {
-    commits map {
-      c: Commit => {
-        c.addedLines
-      }
-    } reduceLeft(_+_)
-  }
-  
-  private def deletedLines(commits: List[Commit]) = {
-    commits map {
-      c: Commit => {
-        c.deletedLines
-      }
-    } reduceLeft(_+_)
   }
   
   private def commitsByDay(commits: List[Commit]) = {

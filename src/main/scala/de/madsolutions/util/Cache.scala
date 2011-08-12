@@ -35,9 +35,7 @@ object Cache {
     commits.size.toDouble / days
   }
 
-  lazy val projectAge = {
-    (new Date().getTime() - firstCommit.date.getTime()).toDouble / MILLISECONDS_PER_DAY.toDouble
-  }
+  lazy val projectAge = DateHelper.timeSpanBetween(firstCommit.date, lastCommit.date).inDays
 
   lazy val commitsByWeek = {
     commits.groupBy {
@@ -88,5 +86,21 @@ object Cache {
           c.author
         }
     }
+  }
+  
+  def addedLinesFor(commits: List[Commit]) = {
+    commits map {
+      c: Commit => {
+        c.addedLines
+      }
+    } reduceLeft(_+_)
+  }
+  
+  def deletedLinesFor(commits: List[Commit]) = {
+    commits map {
+      c: Commit => {
+        c.deletedLines
+      }
+    } reduceLeft(_+_)
   }
 }
