@@ -36,6 +36,8 @@ class ActivityReport extends ReportGenerator {
       <img src={ deletedLinesOverTimeChart(authors, firstCommit, lastCommit) }/>
       <hr/>
       <img src={ commitsByMonthChart(activity, firstCommit, lastCommit) }/>
+      <hr/>
+      <img src={ commitsByWeekChart(activity, firstCommit, lastCommit) }/>
     </div>
   }
 
@@ -103,12 +105,11 @@ class ActivityReport extends ReportGenerator {
 
   private def commitsByMonthChart(activity: Node, firstCommit: Date, lastCommit: Date) = {
 
-    val dataset = new TimeSeriesCollection
+    val dataset = new DefaultCategoryDataset
 
     val firstMonth = new Month(firstCommit)
     val lastMonth = new Month(lastCommit)
 
-    val series = new TimeSeries("")
     var currentMonth = firstMonth
 
     while (currentMonth.compareTo(lastMonth) <= 0) {
@@ -117,13 +118,35 @@ class ActivityReport extends ReportGenerator {
         case None => 0
       }
 
-      series.add(currentMonth, numCommits)
+      //series.add(currentMonth, numCommits)
+      dataset.addValue(numCommits, currentMonth, "Category")
       currentMonth = currentMonth.next.asInstanceOf[Month]
     }
 
-    dataset.addSeries(series)
+    val chart = ChartFactory.createBarChart("CommitsByMonth", "Date", "# commits", dataset, PlotOrientation.VERTICAL, true, true, false)
+    Chart.save(outputPath, chart)
+  }
+  
+  private def commitsByWeekChart(activity: Node, firstCommit: Date, lastCommit: Date) = {
 
-    val chart = ChartFactory.createTimeSeriesChart("CommitsByMonth", "Date", "# commits", dataset, true, true, false)
+    val dataset = new DefaultCategoryDataset
+
+    val firstWeek = new Week(firstCommit)
+    val lastWeek = new Week(lastCommit)
+
+    var currentWeek = firstWeek
+
+    while (currentWeek.compareTo(lastWeek) <= 0) {
+      val numCommits = (activity \ "weekly" \ "numCommits").find { n: Node => (n \ "@weeksAgo").text.toInt == DateHelper.timeSpanBetweenNowAnd(currentWeek.getStart()).inWeeks.toInt } match {
+        case Some(node) => node.text.toInt
+        case None => 0
+      }
+
+      dataset.addValue(numCommits, currentWeek, "Category")
+      currentWeek = currentWeek.next.asInstanceOf[Week]
+    }
+
+    val chart = ChartFactory.createBarChart("CommitsByWeek", "Date", "# commits", dataset, PlotOrientation.VERTICAL, true, true, false)
     Chart.save(outputPath, chart)
   }
 }
