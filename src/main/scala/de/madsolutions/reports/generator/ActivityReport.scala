@@ -119,7 +119,7 @@ class ActivityReport extends ReportGenerator {
       }
 
       //series.add(currentMonth, numCommits)
-      dataset.addValue(numCommits, currentMonth, "Category")
+      dataset.addValue(numCommits, "Month", currentMonth)
       currentMonth = currentMonth.next.asInstanceOf[Month]
     }
 
@@ -142,7 +142,7 @@ class ActivityReport extends ReportGenerator {
         case None => 0
       }
 
-      dataset.addValue(numCommits, currentWeek, "Category")
+      dataset.addValue(numCommits, "Weeks ago", DateHelper.timeSpanBetweenNowAnd(currentWeek.getStart).inWeeks.toInt)
       currentWeek = currentWeek.next.asInstanceOf[Week]
     }
 

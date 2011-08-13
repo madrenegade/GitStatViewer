@@ -14,7 +14,7 @@ object Chart {
     val filename = chart.getTitle.getText
     
     val file = new File(outputPath + "/" + filename + ".png")
-    ChartUtilities.saveChartAsPNG(file, chart, 600, 400)
+    ChartUtilities.saveChartAsPNG(file, chart, 1024, 400)
     
     filename + ".png"
   }
