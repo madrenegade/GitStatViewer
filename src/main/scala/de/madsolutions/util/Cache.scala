@@ -134,4 +134,12 @@ object Cache {
         }
     } reduceLeft (_ + _)
   }
+  
+  def totalLinesFor(commits: List[Commit]) = {
+    commits map {
+      c: Commit => {
+        c.approximatedLines
+      }
+    } reduceLeft (_+_)
+  }
 }

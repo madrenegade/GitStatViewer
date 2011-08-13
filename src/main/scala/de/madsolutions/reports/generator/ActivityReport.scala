@@ -35,6 +35,8 @@ class ActivityReport extends ReportGenerator {
       <hr/>
       <img src={ deletedLinesOverTimeChart(authors, firstCommit, lastCommit) }/>
       <hr/>
+      <img src={ totalLinesOverTimeChart(authors, firstCommit, lastCommit) }/>
+      <hr/>
       <img src={ commitsByMonthChart(activity, firstCommit, lastCommit) }/>
       <hr/>
       <img src={ commitsByWeekChart(activity, firstCommit, lastCommit) }/>
@@ -100,6 +102,37 @@ class ActivityReport extends ReportGenerator {
     }
 
     val chart = ChartFactory.createTimeSeriesChart("DeletedLinesOfCode", "Date", "Lines of code", dataset, true, true, false)
+    Chart.save(outputPath, chart)
+  }
+  
+  private def totalLinesOverTimeChart(authors: Node, firstCommit: Date, lastCommit: Date) = {
+
+    val dataset = new TimeSeriesCollection
+
+    val firstDay = new Day(firstCommit)
+    val lastDay = new Day(lastCommit)
+
+    (authors \ "author") foreach {
+      author: Node =>
+        {
+          val series = new TimeSeries((author \ "@name").text)
+          var currentDay = firstDay
+
+          while (currentDay.compareTo(lastDay) <= 0) {
+            val totalLines = (author \ "activity").find { n: Node => (n \ "@date").text == DateHelper.format(currentDay.getStart) } match {
+              case Some(activity) => (activity \ "totalLines").text.toInt
+              case None => 0
+            }
+
+            series.add(currentDay, totalLines)
+            currentDay = currentDay.next.asInstanceOf[Day]
+          }
+
+          dataset.addSeries(series)
+        }
+    }
+
+    val chart = ChartFactory.createTimeSeriesChart("TotalLinesOfCode", "Date", "Lines of code", dataset, true, true, false)
     Chart.save(outputPath, chart)
   }
 

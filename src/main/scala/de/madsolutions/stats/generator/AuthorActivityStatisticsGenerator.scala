@@ -38,6 +38,7 @@ class AuthorActivityStatisticsGenerator extends StatGenerator {
                       <activity date={kv._1}>
                         <addedLines>{Cache.addedLinesFor(kv._2)}</addedLines>
                         <deletedLines>{Cache.deletedLinesFor(kv._2)}</deletedLines>
+                        <totalLines>{Cache.totalLinesFor(kv._2)}</totalLines>
                       </activity>
                     }
                   }
